@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/prepare-site.mjs",
+    "build": "next build",
     "start": "node scripts/serve-site.mjs"
   },
   "dependencies": {

@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, resolve, sep } from "node:path";
 
-const root = resolve("dist", "assets");
+const root = resolve("out");
 const port = Number(process.env.PORT || 3000);
 
 const contentTypes = {
