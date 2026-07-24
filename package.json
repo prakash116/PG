@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "build": "next build && node scripts/prepare-site.mjs",
+    "start": "node scripts/serve-site.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",
