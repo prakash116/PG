@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/prepare-site.mjs",
-    "start": "node scripts/serve-site.mjs"
+    "build": "next build && opennextjs-cloudflare build --skipNextBuild && node scripts/prepare-site.mjs",
+    "preview": "opennextjs-cloudflare preview",
+    "start": "opennextjs-cloudflare preview"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.20.2",
     "next": "^15.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
@@ -19,6 +21,7 @@
     "@types/react-dom": "^19",
     "postcss": "^8.5.0",
     "tailwindcss": "^4.1.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.114.0"
   }
 }

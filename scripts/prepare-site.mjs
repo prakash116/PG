@@ -1,15 +1,32 @@
-import { cpSync, existsSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, rmSync } from "node:fs";
+import { join } from "node:path";
 
-const exportDirectory = "out";
+const openNextDirectory = ".open-next";
 const deploymentDirectory = "dist";
+const workerEntry = join(openNextDirectory, "worker.js");
+const hostingMetadata = join(".openai", "hosting.json");
 
-if (!existsSync(exportDirectory)) {
+if (!existsSync(workerEntry)) {
   throw new Error(
-    `Expected Next.js static export at "${exportDirectory}". Ensure output is set to "export".`
+    `Expected OpenNext worker at "${workerEntry}". Run the OpenNext Cloudflare build first.`
   );
 }
 
-rmSync(deploymentDirectory, { recursive: true, force: true });
-cpSync(exportDirectory, deploymentDirectory, { recursive: true });
+if (!existsSync(hostingMetadata)) {
+  throw new Error(`Expected deployment metadata at "${hostingMetadata}".`);
+}
 
-console.log(`Prepared static deployment directory: ${deploymentDirectory}`);
+rmSync(deploymentDirectory, { recursive: true, force: true });
+mkdirSync(join(deploymentDirectory, "server"), { recursive: true });
+mkdirSync(join(deploymentDirectory, ".openai"), { recursive: true });
+
+cpSync(openNextDirectory, join(deploymentDirectory, "server"), { recursive: true });
+cpSync(workerEntry, join(deploymentDirectory, "server", "index.js"));
+cpSync(hostingMetadata, join(deploymentDirectory, ".openai", "hosting.json"));
+
+const openNextAssets = join(openNextDirectory, "assets");
+if (existsSync(openNextAssets)) {
+  cpSync(openNextAssets, join(deploymentDirectory, "assets"), { recursive: true });
+}
+
+console.log(`Prepared OpenNext deployment directory: ${deploymentDirectory}`);
