@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+@theme {
+  --color-terracotta: #e2725b;
+  --color-terracotta-deep: #c85a44;
+  --color-terracotta-soft: #f6d9d1;
+  --color-teal: #1b4d4a;
+  --color-teal-deep: #12312f;
+  --color-teal-soft: #dde9e7;
+  --color-cream: #faf3eb;
+  --color-cream-bright: #fffdf9;
+  --color-sand: #f0e4d7;
+  --color-sand-deep: #e5d4c0;
+  --color-leaf: #4caf7d;
+  --color-leaf-soft: #ddf0e6;
+  --color-leaf-deep: #1e7a4e;
+  --color-rust: #b85c4a;
+  --color-rust-soft: #f0dbd5;
+  --color-ink: #2e2420;
+  --color-ink-soft: #6e5f55;
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+
+  --shadow-warm: 0 4px 16px rgba(46, 36, 32, 0.08), 0 12px 32px rgba(46, 36, 32, 0.06);
+  --shadow-lift: 0 8px 24px rgba(46, 36, 32, 0.12), 0 20px 48px rgba(46, 36, 32, 0.1);
+
+  --animate-wiggle: wiggle 3.5s ease-in-out infinite;
+  --animate-pulse-dot: pulse-dot 2s infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(5deg); }
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 125, 0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(76, 175, 125, 0); }
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--color-terracotta-soft);
+  color: var(--color-teal-deep);
+}
+
+a,
+button,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-terracotta);
+  outline-offset: 3px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* grain texture overlay */
+.grain {
+  position: relative;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* jharokha arched frame — the signature motif */
+.arch {
+  border-radius: 130px 130px 18px 18px;
+  overflow: hidden;
+}
+.arch-sm {
+  border-radius: 80px 80px 14px 14px;
+  overflow: hidden;
+}
+
+/* organic decorative blob */
+.blob {
+  border-radius: 47% 53% 60% 40% / 45% 48% 52% 55%;
+}
+
+/* availability toggle (promo demo) */
+.avtog {
+  position: relative;
+  width: 132px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--color-rust-soft);
+  border: 2px solid var(--color-rust);
+  transition: all 0.3s;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.avtog .knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-rust);
+  transition: all 0.38s cubic-bezier(0.34, 1.8, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+.avtog .lbl {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  transition: opacity 0.25s;
+}
+.avtog .lbl-full { right: 14px; color: var(--color-rust); }
+.avtog .lbl-avail { left: 14px; color: var(--color-leaf-deep); opacity: 0; }
+.avtog.on { background: var(--color-leaf-soft); border-color: var(--color-leaf); }
+.avtog.on .knob { left: calc(100% - 37px); background: var(--color-leaf); }
+.avtog.on .lbl-full { opacity: 0; }
+.avtog.on .lbl-avail { opacity: 1; }
+
+/* scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* FAQ accordion (native details) */
+details.faq summary {
+  list-style: none;
+  cursor: pointer;
+}
+details.faq summary::-webkit-details-marker {
+  display: none;
+}
+details.faq summary .faq-ico {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+details.faq[open] summary .faq-ico {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
